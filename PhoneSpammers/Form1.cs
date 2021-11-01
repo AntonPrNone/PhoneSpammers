@@ -159,7 +159,7 @@ namespace PhoneSpammers
                 { 
                     input3 += input2.Split('\n')[0].Split(',')[0].Trim().Substring(0, 11) + ", " + kl + ", " + h + ":" + m + ":" + s + "\n";
                 }
-                
+
                 numbersUsed += input2.Split('\n')[0].Split(',')[0].Trim().Substring(0, 11) + "+";
             }
 
