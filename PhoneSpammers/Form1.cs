@@ -15,8 +15,14 @@ namespace PhoneSpammers
     public partial class MainWindow : Form
     {
         public string input;
-        public System.DateTime StartTime;
-        public System.DateTime EndTime;
+        public string StartTime;
+        public string EndTime;
+
+        public string NumberOutPer;
+        public string NumberIncPer;
+        public string DateConnectionPer;
+        public string TimeConnectionPer;
+        public string DurationCallPer;
 
         public MainWindow()
         {
@@ -44,8 +50,8 @@ namespace PhoneSpammers
 
         private void ReportButton_Click(object sender, EventArgs e)
         {
-            StartTime = DateStartPeriod.Value;
-            EndTime = DateEndPeriod.Value;
+            StartTime = Convert.ToString(DateStartPeriod.Value);
+            EndTime = Convert.ToString(DateEndPeriod.Value);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -55,8 +61,55 @@ namespace PhoneSpammers
 
         private void PutButton_Click(object sender, EventArgs e)
         {
-            input += DateConnection.Value.ToShortDateString();
+            NumberOutPer = NumberOut.Text.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+            NumberIncPer = NumberInc.Text.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+            DateConnectionPer = Convert.ToString(DateConnection.Value.ToShortDateString());
+            TimeConnectionPer = Convert.ToString(TimeConnection.Text);
+            DurationCallPer = DurationCall.Text;
+            input += NumberOutPer + ", " + NumberIncPer + ", " + DateConnectionPer + ", " + TimeConnectionPer + ", " + DurationCallPer;
             Heading.Text = input;
+
+            if (NumberOutPer.Length != 11)
+            {
+                Heading.ForeColor;
+            }
+
+            else if (NumberOutPer.Length != 11)
+            {
+
+            }
+
+            else if (DateConnectionPer.Length != 8) 
+            { 
+            
+            }
+
+            else
+            {
+                int x = 1;
+                try
+                {
+                    Convert.ToInt32(DurationCallPer);
+                }
+
+                catch
+                {
+                    x = 0;
+                }
+
+                finally 
+                {
+                    if (x == 1)
+                    {
+                      
+                    }                
+                }
+            }
+        }
+
+        private void NumberOut_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
         }
     }
 }

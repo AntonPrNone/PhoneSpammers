@@ -57,6 +57,7 @@ namespace PhoneSpammers
             this.NumberOut.Name = "NumberOut";
             this.NumberOut.Size = new System.Drawing.Size(100, 20);
             this.NumberOut.TabIndex = 1;
+            this.NumberOut.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.NumberOut_MaskInputRejected);
             // 
             // NumberInc
             // 
