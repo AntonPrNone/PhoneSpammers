@@ -44,10 +44,11 @@ namespace PhoneSpammers
             this.label4 = new System.Windows.Forms.Label();
             this.DateStartPeriod = new System.Windows.Forms.DateTimePicker();
             this.DateEndPeriod = new System.Windows.Forms.DateTimePicker();
-            this.ReportButton = new System.Windows.Forms.Button();
-            this.Open = new System.Windows.Forms.Button();
+            this.SaveAndCloseButton = new System.Windows.Forms.Button();
+            this.OpenFileButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.PutButton = new System.Windows.Forms.Button();
+            this.SavePeportButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // NumberOut
@@ -57,7 +58,6 @@ namespace PhoneSpammers
             this.NumberOut.Name = "NumberOut";
             this.NumberOut.Size = new System.Drawing.Size(100, 20);
             this.NumberOut.TabIndex = 1;
-            this.NumberOut.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.NumberOut_MaskInputRejected);
             // 
             // NumberInc
             // 
@@ -69,15 +69,16 @@ namespace PhoneSpammers
             // 
             // Heading
             // 
-            this.Heading.AutoSize = true;
             this.Heading.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.Heading.Dock = System.Windows.Forms.DockStyle.Top;
             this.Heading.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Heading.ForeColor = System.Drawing.Color.Green;
-            this.Heading.Location = new System.Drawing.Point(299, 28);
+            this.Heading.Location = new System.Drawing.Point(0, 0);
             this.Heading.Name = "Heading";
-            this.Heading.Size = new System.Drawing.Size(232, 32);
+            this.Heading.Size = new System.Drawing.Size(800, 35);
             this.Heading.TabIndex = 3;
             this.Heading.Text = "Spammer Detection";
+            this.Heading.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // Text_OutgoingCall
             // 
@@ -137,7 +138,6 @@ namespace PhoneSpammers
             this.DurationCall.Name = "DurationCall";
             this.DurationCall.Size = new System.Drawing.Size(60, 20);
             this.DurationCall.TabIndex = 9;
-            this.DurationCall.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label2
             // 
@@ -188,30 +188,30 @@ namespace PhoneSpammers
             this.DateEndPeriod.Size = new System.Drawing.Size(140, 20);
             this.DateEndPeriod.TabIndex = 14;
             // 
-            // ReportButton
+            // SaveAndCloseButton
             // 
-            this.ReportButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ReportButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ReportButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ReportButton.Location = new System.Drawing.Point(364, 415);
-            this.ReportButton.Name = "ReportButton";
-            this.ReportButton.Size = new System.Drawing.Size(126, 27);
-            this.ReportButton.TabIndex = 15;
-            this.ReportButton.Text = "Generate a report";
-            this.ReportButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ReportButton.UseVisualStyleBackColor = false;
-            this.ReportButton.Click += new System.EventHandler(this.ReportButton_Click);
+            this.SaveAndCloseButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.SaveAndCloseButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.SaveAndCloseButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SaveAndCloseButton.Location = new System.Drawing.Point(376, 410);
+            this.SaveAndCloseButton.Name = "SaveAndCloseButton";
+            this.SaveAndCloseButton.Size = new System.Drawing.Size(108, 27);
+            this.SaveAndCloseButton.TabIndex = 15;
+            this.SaveAndCloseButton.Text = "Save and Close";
+            this.SaveAndCloseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.SaveAndCloseButton.UseVisualStyleBackColor = false;
+            this.SaveAndCloseButton.Click += new System.EventHandler(this.SaveAndCloseButton_Click);
             // 
-            // Open
+            // OpenFileButton
             // 
-            this.Open.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Open.Location = new System.Drawing.Point(28, 28);
-            this.Open.Name = "Open";
-            this.Open.Size = new System.Drawing.Size(75, 26);
-            this.Open.TabIndex = 16;
-            this.Open.Text = "Open file";
-            this.Open.UseVisualStyleBackColor = true;
-            this.Open.Click += new System.EventHandler(this.Open_Click);
+            this.OpenFileButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.OpenFileButton.Location = new System.Drawing.Point(28, 28);
+            this.OpenFileButton.Name = "OpenFileButton";
+            this.OpenFileButton.Size = new System.Drawing.Size(75, 26);
+            this.OpenFileButton.TabIndex = 16;
+            this.OpenFileButton.Text = "Open file";
+            this.OpenFileButton.UseVisualStyleBackColor = true;
+            this.OpenFileButton.Click += new System.EventHandler(this.OpenFileButton_Click);
             // 
             // openFileDialog1
             // 
@@ -228,15 +228,27 @@ namespace PhoneSpammers
             this.PutButton.UseVisualStyleBackColor = true;
             this.PutButton.Click += new System.EventHandler(this.PutButton_Click);
             // 
+            // SavePeportButton
+            // 
+            this.SavePeportButton.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.SavePeportButton.Location = new System.Drawing.Point(679, 28);
+            this.SavePeportButton.Name = "SavePeportButton";
+            this.SavePeportButton.Size = new System.Drawing.Size(91, 26);
+            this.SavePeportButton.TabIndex = 18;
+            this.SavePeportButton.Text = "Save Report";
+            this.SavePeportButton.UseVisualStyleBackColor = true;
+            this.SavePeportButton.Click += new System.EventHandler(this.SavePeportButton_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(800, 461);
+            this.Controls.Add(this.SavePeportButton);
             this.Controls.Add(this.PutButton);
-            this.Controls.Add(this.Open);
-            this.Controls.Add(this.ReportButton);
+            this.Controls.Add(this.OpenFileButton);
+            this.Controls.Add(this.SaveAndCloseButton);
             this.Controls.Add(this.DateEndPeriod);
             this.Controls.Add(this.DateStartPeriod);
             this.Controls.Add(this.label4);
@@ -275,10 +287,11 @@ namespace PhoneSpammers
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker DateStartPeriod;
         private System.Windows.Forms.DateTimePicker DateEndPeriod;
-        private System.Windows.Forms.Button ReportButton;
-        private Button Open;
+        private System.Windows.Forms.Button SaveAndCloseButton;
+        private Button OpenFileButton;
         private OpenFileDialog openFileDialog1;
         private Button PutButton;
+        private Button SavePeportButton;
     }
 }
 

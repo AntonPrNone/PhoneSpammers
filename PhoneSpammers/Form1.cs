@@ -30,7 +30,7 @@ namespace PhoneSpammers
         }
 
 
-        private void Open_Click(object sender, EventArgs e)
+        private void OpenFileButton_Click(object sender, EventArgs e) // При нажатии на кнопку Open File
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -38,7 +38,7 @@ namespace PhoneSpammers
                 {
                     var sr = new StreamReader(openFileDialog1.FileName);
                     input = sr.ReadToEnd();
-                    Heading.Text = input;
+                    sr.Close();
                 }
                 catch (SecurityException ex)
                 {
@@ -48,40 +48,38 @@ namespace PhoneSpammers
             }
         }
 
-        private void ReportButton_Click(object sender, EventArgs e)
+        private void SaveAndCloseButton_Click(object sender, EventArgs e) // При нажатии на кнопку Peport
         {
-            StartTime = Convert.ToString(DateStartPeriod.Value);
-            EndTime = Convert.ToString(DateEndPeriod.Value);
+            var rs = new StreamWriter(openFileDialog1.FileName, false);
+            rs.WriteLine(input);
+            rs.Close();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PutButton_Click(object sender, EventArgs e)
+        private void PutButton_Click(object sender, EventArgs e) // При нажатии на кнопку Put
         {
             NumberOutPer = NumberOut.Text.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
             NumberIncPer = NumberInc.Text.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
             DateConnectionPer = Convert.ToString(DateConnection.Value.ToShortDateString());
             TimeConnectionPer = Convert.ToString(TimeConnection.Text);
             DurationCallPer = DurationCall.Text;
-            input += NumberOutPer + ", " + NumberIncPer + ", " + DateConnectionPer + ", " + TimeConnectionPer + ", " + DurationCallPer;
-            Heading.Text = input;
-
-            if (NumberOutPer.Length != 11)
-            {
-                Heading.ForeColor;
-            }
-
-            else if (NumberOutPer.Length != 11)
-            {
-
-            }
-
-            else if (DateConnectionPer.Length != 8) 
-            { 
             
+
+            if (NumberOutPer.Length != 12)
+            {
+                Heading.ForeColor = Color.Red;
+                Heading.Text = @"Invalid field input format ""Outgoing call"" ";
+            }
+
+            else if (NumberIncPer.Length != 12)
+            {
+                Heading.ForeColor = Color.Red;
+                Heading.Text = @"Invalid field input format ""Incoming call"" ";
+            }
+
+            else if (TimeConnectionPer.Length != 8) 
+            {
+                Heading.ForeColor = Color.Red;
+                Heading.Text = @"Invalid field input format ""Time of connection start"" ";
             }
 
             else
@@ -95,25 +93,77 @@ namespace PhoneSpammers
                 catch
                 {
                     x = 0;
+                    Heading.ForeColor = Color.Red;
+                    Heading.Text = @"Invalid field input format ""Connection duration"" ";
                 }
 
                 finally 
                 {
                     if (x == 1)
                     {
-                      
+                        Heading.ForeColor = Color.Green;
+                        Heading.Text = "Spammer Detection";
+
+                        input += NumberOutPer + ", " + NumberIncPer + ", " + DateConnectionPer + ", " + TimeConnectionPer + ", " + DurationCallPer + "\n";
                     }                
                 }
             }
         }
 
-        private void NumberOut_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        private void MainWindow_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void MainWindow_Load(object sender, EventArgs e)
+        private void SavePeportButton_Click(object sender, EventArgs e)
         {
+            StartTime = Convert.ToString(DateStartPeriod.Value);
+            EndTime = Convert.ToString(DateEndPeriod.Value);
+
+            var sr = new StreamReader(openFileDialog1.FileName);
+            input = sr.ReadToEnd();
+            input = input.Substring(0, input.Length - 6);
+
+            sr.Close();
+
+            string input2 = "";
+            string input3 = "";
+            foreach (string i in input.Split('\n'))
+            {
+                string x = i.Split(',')[2].Trim();
+                if (DateTime.Parse(StartTime) <= DateTime.Parse(x) && DateTime.Parse(EndTime) >= DateTime.Parse(x))
+                {
+                    input2 += i;
+                }
+            }
+
+            string numbersUsed = "";
+            for (int j = 0; j < ("\n".Length - "\n".Replace(input2, "").Length) / input2.Length; j++)
+            {
+                int kl = 0;
+                int summ = 0;
+                int lenghtInput2 = ("\n".Length - "\n".Replace(input2, "").Length) / input2.Length;
+                for (int i = 0; i < lenghtInput2; i++)
+                {
+                    if (input2.Split('\n')[0].Split(',')[0].Trim().Substring(0, 11) == input2.Split('\n')[i].Split(',')[0].Trim().Substring(0, 11) && Array.IndexOf(numbersUsed.Split('+'), input2.Split('\n')[i].Split(',')[0].Trim().Substring(0, 11)) == 0)
+                    {
+                        kl++;
+                        summ += Convert.ToInt32(input2.Split('\n')[i].Split(',')[3].Trim());
+                    }
+                }
+
+                int h = summ / 3600;
+                int m = (summ - (h * 3600)) / 60;
+                int s = summ % 60;
+                if (input3.Split('\n').Length <= 10)
+                { 
+                    input3 += input2.Split('\n')[0].Split(',')[0].Trim().Substring(0, 11) + ", " + kl + ", " + h + ":" + m + ":" + s + "\n";
+                }
+                
+                numbersUsed += input2.Split('\n')[0].Split(',')[0].Trim().Substring(0, 11) + "+";
+            }
+
+            System.IO.File.WriteAllText("C:\\Report.txt", input3);
 
         }
     }
