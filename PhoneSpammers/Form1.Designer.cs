@@ -253,6 +253,7 @@ namespace PhoneSpammers
             this.Controls.Add(this.NumberOut);
             this.Name = "MainWindow";
             this.Text = " ";
+            this.Load += new System.EventHandler(this.MainWindow_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
