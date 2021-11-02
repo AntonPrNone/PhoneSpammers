@@ -104,7 +104,7 @@ namespace PhoneSpammers
                         Heading.ForeColor = Color.Green;
                         Heading.Text = "Spammer Detection";
 
-                        input += NumberOutPer + ", " + NumberIncPer + ", " + DateConnectionPer + ", " + TimeConnectionPer + ", " + DurationCallPer + "\n";
+                        input += NumberOutPer + ", " + NumberIncPer + ", " + DateConnectionPer + " " + TimeConnectionPer + ", " + DurationCallPer + "\n";
                     }                
                 }
             }
@@ -122,7 +122,7 @@ namespace PhoneSpammers
 
             var sr = new StreamReader(openFileDialog1.FileName);
             input = sr.ReadToEnd();
-            input = input.Substring(0, input.Length - 6);
+            //input = input.Substring(0, input.Length - 6);
 
             sr.Close();
 
@@ -130,25 +130,37 @@ namespace PhoneSpammers
             string input3 = "";
             foreach (string i in input.Split('\n'))
             {
-                string x = i.Split(',')[2].Trim();
-                if (DateTime.Parse(StartTime) <= DateTime.Parse(x) && DateTime.Parse(EndTime) >= DateTime.Parse(x))
-                {
-                    input2 += i;
-                }
+                 string x = i.Split(',')[2].Trim().Substring(0, 10);
+                 if (DateTime.Parse(StartTime.Substring(0, 10)) <= DateTime.Parse(x) && DateTime.Parse(EndTime.Substring(0, 10)) >= DateTime.Parse(x))
+                 {
+                    input2 += i + '\n';
+                 }
             }
 
             string numbersUsed = "";
-            for (int j = 0; j < ("\n".Length - "\n".Replace(input2, "").Length) / input2.Length; j++)
+            for (int j = 0; j < (input2.Length - input2.Replace("\n", "").Length) / "\n".Length; j++)
             {
                 int kl = 0;
                 int summ = 0;
-                int lenghtInput2 = ("\n".Length - "\n".Replace(input2, "").Length) / input2.Length;
+                string activeValue = "";
+                int lenghtInput2 = (input2.Length - input2.Replace("\n", "").Length) / "\n".Length;
                 for (int i = 0; i < lenghtInput2; i++)
                 {
-                    if (input2.Split('\n')[0].Split(',')[0].Trim().Substring(0, 11) == input2.Split('\n')[i].Split(',')[0].Trim().Substring(0, 11) && Array.IndexOf(numbersUsed.Split('+'), input2.Split('\n')[i].Split(',')[0].Trim().Substring(0, 11)) == 0)
+                    
+                    if (Array.IndexOf(numbersUsed.Split('-'), input2.Split('\n')[i].Split(',')[0].Trim()) == -1)
                     {
-                        kl++;
-                        summ += Convert.ToInt32(input2.Split('\n')[i].Split(',')[3].Trim());
+                        
+                        if (kl == 0) 
+                        {
+                            activeValue = input2.Split('\n')[i].Split(',')[0].Trim();
+                        }
+
+                        if (input2.Split('\n')[i].Split(',')[0].Trim() == activeValue)
+                        { 
+                            kl++;
+                            summ += Convert.ToInt32(input2.Split('\n')[i].Split(',')[3].Trim());
+                        }
+                            
                     }
                 }
 
@@ -157,10 +169,10 @@ namespace PhoneSpammers
                 int s = summ % 60;
                 if (input3.Split('\n').Length <= 10)
                 { 
-                    input3 += input2.Split('\n')[0].Split(',')[0].Trim().Substring(0, 11) + ", " + kl + ", " + h + ":" + m + ":" + s + "\n";
+                    input3 += input2.Split('\n')[0].Split(',')[0].Trim() + ", " + kl + ", " + h + ":" + m + ":" + s + "\n";
                 }
 
-                numbersUsed += input2.Split('\n')[0].Split(',')[0].Trim().Substring(0, 11) + "+";
+                numbersUsed += input2.Split('\n')[0].Split(',')[0].Trim() + "-";
             }
 
             System.IO.File.WriteAllText("C:\\Report.txt", input3);
